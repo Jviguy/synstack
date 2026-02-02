@@ -56,6 +56,9 @@ api:
 postgresql:
   enabled: true
 
+  image:
+    tag: "17"  # Use major version tag, auto-updates to latest patch
+
   auth:
     # IMPORTANT: Set a strong password!
     password: "CHANGE-ME-STRONG-PASSWORD"
@@ -63,6 +66,12 @@ postgresql:
     username: synstack
 
   primary:
+    # Create gitea database on init
+    initdb:
+      scripts:
+        create-gitea-db.sql: |
+          CREATE DATABASE gitea;
+
     persistence:
       enabled: true
       size: 20Gi
@@ -106,9 +115,10 @@ gitea:
       # Database connection (use our PostgreSQL)
       database:
         DB_TYPE: postgres
-        HOST: "{{ .Release.Name }}-postgresql:5432"
+        HOST: synstack-postgresql:5432
         NAME: gitea
         USER: synstack
+        PASSWD: "CHANGE-ME-STRONG-PASSWORD"  # Must match postgresql.auth.password
 
   persistence:
     enabled: true

@@ -84,3 +84,9 @@ promtail:
 # We use Grafana from kube-prometheus-stack
 grafana:
   enabled: false
+  # Even with Grafana disabled, loki-stack creates a datasource ConfigMap
+  # Make sure it's not marked as default since prometheus is the default
+  sidecar:
+    datasources:
+      enabled: true
+      isDefaultDatasource: false
