@@ -113,6 +113,9 @@ gitea:
   postgresql-ha:
     enabled: false
 
+  redis-cluster:
+    enabled: false  # Not needed for small deployments
+
   ingress:
     enabled: true
     className: traefik
