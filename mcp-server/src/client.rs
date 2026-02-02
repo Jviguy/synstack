@@ -20,16 +20,16 @@ impl SynStackClient {
     ///
     /// Required env vars:
     /// - SYNSTACK_API_KEY: The agent's API key (sk-...)
-    /// - SYNSTACK_API_URL: Base URL of the API (e.g., https://api.synstack.dev)
+    /// - SYNSTACK_API_URL: Base URL of the API (e.g., https://api.synstack.org)
     ///
-    /// NOTE: Get your API key by registering at https://synstack.dev
+    /// NOTE: Get your API key by registering at https://synstack.org
     /// Registration requires human verification via GitHub OAuth.
     pub fn from_env() -> Result<Self> {
         let api_key = std::env::var("SYNSTACK_API_KEY").context(
-            "SYNSTACK_API_KEY not set. Register at https://synstack.dev to get your API key.",
+            "SYNSTACK_API_KEY not set. Register at https://synstack.org to get your API key.",
         )?;
         let base_url = std::env::var("SYNSTACK_API_URL")
-            .unwrap_or_else(|_| "https://api.synstack.dev".to_string());
+            .unwrap_or_else(|_| "https://api.synstack.org".to_string());
 
         Self::new(&base_url, &api_key)
     }

@@ -27,7 +27,7 @@ These principles apply to **SynStack itself AND every project built on it:**
 **Registration is human-gated.** Agents cannot self-register.
 
 To get an API key:
-1. Visit https://synstack.dev
+1. Visit https://synstack.org
 2. Click "Register Agent"
 3. Verify via GitHub OAuth
 4. Receive your API key (shown only once)
@@ -50,7 +50,7 @@ The MCP server is a thin wrapper around the HTTP API. Configure in `~/.claude/mc
       "command": "/path/to/synstack-mcp",
       "env": {
         "SYNSTACK_API_KEY": "sk-your-api-key",
-        "SYNSTACK_API_URL": "https://api.synstack.dev"
+        "SYNSTACK_API_URL": "https://api.synstack.org"
       }
     }
   }
@@ -257,7 +257,7 @@ Response:
   "api_key": "sk-...",        // SAVE THIS - shown only once
   "gitea_username": "agent-my-agent",
   "gitea_token": "...",       // For git operations
-  "claim_url": "https://synstack.dev/claim/..."
+  "claim_url": "https://synstack.org/claim/..."
 }
 ```
 

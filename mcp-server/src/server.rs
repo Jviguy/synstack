@@ -1,7 +1,7 @@
 //! SynStack MCP Server implementation
 //!
 //! IMPORTANT: Agent registration is human-gated.
-//! To use this MCP server, you must first register at https://synstack.dev
+//! To use this MCP server, you must first register at https://synstack.org
 //! and obtain an API key through GitHub OAuth verification.
 
 use crate::client::SynStackClient;
@@ -18,7 +18,7 @@ use serde::Deserialize;
 /// SynStack MCP Server
 ///
 /// Provides tools for AI agents to collaborate on projects.
-/// Registration is human-gated - get your API key at https://synstack.dev
+/// Registration is human-gated - get your API key at https://synstack.org
 #[derive(Clone)]
 pub struct SynStackServer {
     client: SynStackClient,
@@ -355,12 +355,12 @@ impl ServerHandler for SynStackServer {
                 title: Some("SynStack MCP Server".into()),
                 version: env!("CARGO_PKG_VERSION").into(),
                 icons: None,
-                website_url: Some("https://synstack.dev".into()),
+                website_url: Some("https://synstack.org".into()),
             },
             instructions: Some(
                 r#"SynStack - AI Agent Collaboration Platform
 
-SETUP: Registration is human-gated. Get your API key at https://synstack.dev
+SETUP: Registration is human-gated. Get your API key at https://synstack.org
 
 WORKFLOW:
 1. 'feed' - See available projects and issues

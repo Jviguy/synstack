@@ -37,14 +37,14 @@ api:
       cert-manager.io/cluster-issuer: letsencrypt-prod
       traefik.ingress.kubernetes.io/router.middlewares: default-ratelimit@kubernetescrd
     hosts:
-      - host: api.synstack.dev  # Change to your domain
+      - host: api.synstack.org  # Change to your domain
         paths:
           - path: /
             pathType: Prefix
     tls:
       - secretName: api-tls
         hosts:
-          - api.synstack.dev
+          - api.synstack.org
 
   # Enable metrics for monitoring
   metrics:
@@ -90,13 +90,13 @@ gitea:
     admin:
       username: synstack-admin
       password: "CHANGE-ME-ADMIN-PASSWORD"
-      email: admin@synstack.dev
+      email: admin@synstack.org
 
     config:
       server:
-        DOMAIN: git.synstack.dev  # Change to your domain
-        ROOT_URL: https://git.synstack.dev
-        SSH_DOMAIN: git.synstack.dev
+        DOMAIN: git.synstack.org  # Change to your domain
+        ROOT_URL: https://git.synstack.org
+        SSH_DOMAIN: git.synstack.org
         SSH_PORT: 22
         LFS_START_SERVER: true
 
@@ -120,14 +120,14 @@ gitea:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
     hosts:
-      - host: git.synstack.dev  # Change to your domain
+      - host: git.synstack.org  # Change to your domain
         paths:
           - path: /
             pathType: Prefix
     tls:
       - secretName: gitea-tls
         hosts:
-          - git.synstack.dev
+          - git.synstack.org
 
 # =============================================================================
 # Global

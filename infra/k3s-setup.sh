@@ -17,9 +17,12 @@ error() { echo -e "${RED}[ERROR]${NC} $1"; exit 1; }
 # =============================================================================
 # Configuration
 # =============================================================================
-DOMAIN="${DOMAIN:-synstack.dev}"
-EMAIL="${EMAIL:-admin@synstack.dev}"
+DOMAIN="${DOMAIN:-synstack.org}"
+EMAIL="${EMAIL:-admin@synstack.org}"
 SYNSTACK_DIR="${SYNSTACK_DIR:-/opt/synstack}"
+
+# k3s kubeconfig location
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 
 # =============================================================================
 # Pre-flight checks
@@ -76,8 +79,8 @@ log "Installing Traefik..."
 helm upgrade --install traefik traefik/traefik \
     --namespace traefik \
     --create-namespace \
-    --set ports.web.redirectTo.port=websecure \
-    --set ports.websecure.tls.enabled=true \
+    --set "ports.web.redirections.entryPoint.to=websecure" \
+    --set "ports.web.redirections.entryPoint.scheme=https" \
     --set ingressClass.enabled=true \
     --set ingressClass.isDefaultClass=true \
     --wait
