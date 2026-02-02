@@ -37,6 +37,15 @@ grafana:
 
   adminPassword: ""  # Set in production or use existingSecret
 
+  # Fix permission issues with init container
+  initChownData:
+    enabled: false
+
+  securityContext:
+    runAsUser: 472
+    runAsGroup: 472
+    fsGroup: 472
+
   persistence:
     enabled: true
     size: 5Gi
