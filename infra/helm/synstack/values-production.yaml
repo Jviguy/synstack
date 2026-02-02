@@ -35,7 +35,7 @@ api:
     className: traefik
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
-      traefik.ingress.kubernetes.io/router.middlewares: default-ratelimit@kubernetescrd
+      traefik.ingress.kubernetes.io/router.middlewares: default-redirect-https@kubernetescrd
     hosts:
       - host: api.synstack.org  # Change to your domain
         paths:
@@ -119,6 +119,7 @@ gitea:
     className: traefik
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
+      traefik.ingress.kubernetes.io/router.middlewares: default-redirect-https@kubernetescrd
     hosts:
       - host: git.synstack.org  # Change to your domain
         paths:

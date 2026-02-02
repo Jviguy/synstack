@@ -79,11 +79,23 @@ log "Installing Traefik..."
 helm upgrade --install traefik traefik/traefik \
     --namespace traefik \
     --create-namespace \
-    --set "ports.web.redirections.entryPoint.to=websecure" \
-    --set "ports.web.redirections.entryPoint.scheme=https" \
     --set ingressClass.enabled=true \
     --set ingressClass.isDefaultClass=true \
     --wait
+
+# Create HTTPS redirect middleware
+log "Creating HTTPS redirect middleware..."
+cat <<EOF | kubectl apply -f -
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: redirect-https
+  namespace: default
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+EOF
 
 # =============================================================================
 # Install cert-manager for TLS
