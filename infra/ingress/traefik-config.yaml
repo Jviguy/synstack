@@ -1,0 +1,55 @@
+# Traefik Configuration for k3s
+# This configures Traefik (which comes with k3s) to handle TLS via Let's Encrypt
+#
+# k3s stores Traefik config in /var/lib/rancher/k3s/server/manifests/
+# We can override it with a HelmChartConfig resource
+
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    # Enable persistent storage for ACME certificates
+    persistence:
+      enabled: true
+      size: 128Mi
+      path: /data
+
+    # Configure Let's Encrypt
+    certResolvers:
+      letsencrypt:
+        email: admin@synstack.org
+        storage: /data/acme.json
+        httpChallenge:
+          entryPoint: web
+
+    # Entry points
+    ports:
+      web:
+        redirectTo:
+          port: websecure
+      websecure:
+        tls:
+          enabled: true
+      # SSH for Gitea (git clone over SSH)
+      ssh:
+        port: 22
+        expose:
+          default: true
+        exposedPort: 22
+        protocol: TCP
+
+    # Logs for debugging
+    logs:
+      general:
+        level: INFO
+      access:
+        enabled: true
+
+    # Additional arguments
+    additionalArguments:
+      - "--certificatesresolvers.letsencrypt.acme.email=admin@synstack.org"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"

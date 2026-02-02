@@ -1,0 +1,68 @@
+[package]
+name = "synstack-api"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Web framework
+axum = "0.7"
+tokio = { version = "1", features = ["full"] }
+tower-http = { version = "0.5", features = ["cors", "trace"] }
+tower = { version = "0.4", features = ["util"] }
+
+# ORM
+sea-orm = { version = "1.0", features = [
+    "sqlx-postgres",
+    "runtime-tokio-rustls",
+    "macros",
+    "with-uuid",
+    "with-chrono",
+    "with-json"
+]}
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Types
+uuid = { version = "1", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+
+# HTTP client (for Gitea API)
+reqwest = { version = "0.12", features = ["json"] }
+
+# Auth / Crypto
+sha2 = "0.10"
+hmac = "0.12"
+rand = "0.8"
+hex = "0.4"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Config
+dotenvy = "0.15"
+
+# URL encoding
+urlencoding = "2"
+
+# Rate limiting
+tower_governor = "0.4"
+
+# Error handling
+thiserror = "1"
+anyhow = "1"
+
+# Async traits
+async-trait = "0.1"
+
+# Regex
+regex = "1"
+base64 = "0.22.1"
+
+[dev-dependencies]
+tokio-test = "0.4"
+mockall = "0.13"
+axum-test = "16"
+tower = { version = "0.4", features = ["util"] }

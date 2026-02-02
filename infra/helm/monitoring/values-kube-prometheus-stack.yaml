@@ -1,0 +1,191 @@
+# kube-prometheus-stack values for SynStack
+# Install with: helm install monitoring prometheus-community/kube-prometheus-stack -f values-kube-prometheus-stack.yaml
+
+# =============================================================================
+# Prometheus
+# =============================================================================
+prometheus:
+  prometheusSpec:
+    retention: 15d
+    retentionSize: "10GB"
+
+    resources:
+      requests:
+        memory: "256Mi"
+        cpu: "100m"
+      limits:
+        memory: "1Gi"
+        cpu: "500m"
+
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 20Gi
+
+    # Scrape all ServiceMonitors
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+
+# =============================================================================
+# Grafana
+# =============================================================================
+grafana:
+  enabled: true
+
+  adminPassword: ""  # Set in production or use existingSecret
+
+  persistence:
+    enabled: true
+    size: 5Gi
+
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "50m"
+    limits:
+      memory: "256Mi"
+      cpu: "200m"
+
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    hosts:
+      - grafana.synstack.dev
+    tls:
+      - secretName: grafana-tls
+        hosts:
+          - grafana.synstack.dev
+
+  # Pre-configured dashboards
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+        - name: 'synstack'
+          orgId: 1
+          folder: 'SynStack'
+          type: file
+          disableDeletion: false
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/synstack
+
+  dashboards:
+    synstack:
+      api-overview:
+        json: |
+          {
+            "title": "SynStack API Overview",
+            "uid": "synstack-api",
+            "panels": [
+              {
+                "title": "Request Rate",
+                "type": "graph",
+                "gridPos": {"x": 0, "y": 0, "w": 12, "h": 8},
+                "targets": [
+                  {
+                    "expr": "rate(http_requests_total{job=\"synstack-api\"}[5m])",
+                    "legendFormat": "{{method}} {{path}}"
+                  }
+                ]
+              },
+              {
+                "title": "Response Time (p95)",
+                "type": "graph",
+                "gridPos": {"x": 12, "y": 0, "w": 12, "h": 8},
+                "targets": [
+                  {
+                    "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job=\"synstack-api\"}[5m]))",
+                    "legendFormat": "p95"
+                  }
+                ]
+              }
+            ]
+          }
+
+# =============================================================================
+# Alertmanager
+# =============================================================================
+alertmanager:
+  enabled: true
+
+  alertmanagerSpec:
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "25m"
+      limits:
+        memory: "128Mi"
+        cpu: "100m"
+
+    storage:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 1Gi
+
+  # Configure alerting (add Slack/Discord webhook in production)
+  config:
+    global:
+      resolve_timeout: 5m
+    route:
+      group_by: ['alertname', 'severity']
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 12h
+      receiver: 'null'
+      routes:
+        - match:
+            severity: critical
+          receiver: 'null'  # Replace with 'slack' or 'discord'
+    receivers:
+      - name: 'null'
+      # - name: 'slack'
+      #   slack_configs:
+      #     - api_url: 'https://hooks.slack.com/services/xxx'
+      #       channel: '#alerts'
+
+# =============================================================================
+# Node Exporter (system metrics)
+# =============================================================================
+nodeExporter:
+  enabled: true
+
+# =============================================================================
+# Kube State Metrics (k8s object metrics)
+# =============================================================================
+kubeStateMetrics:
+  enabled: true
+
+# =============================================================================
+# Reduce resource usage for single-node
+# =============================================================================
+prometheusOperator:
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "25m"
+    limits:
+      memory: "256Mi"
+      cpu: "200m"
+
+# Disable components not needed for small clusters
+kubeEtcd:
+  enabled: false
+kubeControllerManager:
+  enabled: false
+kubeScheduler:
+  enabled: false
+kubeProxy:
+  enabled: false
+
+# CoreDNS metrics
+coreDns:
+  enabled: true

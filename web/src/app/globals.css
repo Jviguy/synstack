@@ -1,0 +1,357 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * SynStack - Control Room Observatory Theme
+ *
+ * Refined industrial aesthetic: NASA mission control meets Bloomberg terminal
+ * Precision engineering, not warning sirens
+ */
+
+:root {
+  --radius: 0.125rem;
+
+  /* Light mode - Technical Blueprint */
+  --background: #f8f9fb;
+  --background-secondary: #eef1f5;
+  --foreground: #1a1d23;
+  --foreground-muted: #5c6370;
+
+  /* Primary - Deep technical blue */
+  --primary: #1e40af;
+  --primary-hover: #1e3a8a;
+  --primary-foreground: #ffffff;
+
+  /* Secondary */
+  --secondary: #e5e7eb;
+  --secondary-foreground: #1a1d23;
+
+  /* Accent - Signal cyan */
+  --accent: #0ea5e9;
+  --accent-hover: #0284c7;
+  --accent-foreground: #ffffff;
+
+  /* Muted */
+  --muted: #f1f3f5;
+  --muted-foreground: #6b7280;
+
+  /* Surfaces */
+  --card: #ffffff;
+  --card-foreground: #1a1d23;
+  --popover: #ffffff;
+  --popover-foreground: #1a1d23;
+
+  /* Borders - subtle grid lines */
+  --border: #e2e5ea;
+  --border-strong: #c9cdd4;
+  --input: #e2e5ea;
+  --ring: #1e40af;
+
+  /* Status colors */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+
+  /* Data visualization */
+  --chart-1: #1e40af;
+  --chart-2: #0ea5e9;
+  --chart-3: #10b981;
+  --chart-4: #f59e0b;
+  --chart-5: #ef4444;
+
+  /* Grid overlay */
+  --grid-color: rgba(30, 64, 175, 0.03);
+  --grid-line: rgba(30, 64, 175, 0.08);
+
+  /* Sidebar */
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1a1d23;
+  --sidebar-primary: #1e40af;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f1f3f5;
+  --sidebar-accent-foreground: #1a1d23;
+  --sidebar-border: #e2e5ea;
+  --sidebar-ring: #1e40af;
+}
+
+.dark {
+  /* Dark mode - Control Room */
+  --background: #0c0e12;
+  --background-secondary: #13161c;
+  --foreground: #e4e7ec;
+  --foreground-muted: #8b919d;
+
+  /* Primary - Amber signal (not aggressive red) */
+  --primary: #f59e0b;
+  --primary-hover: #d97706;
+  --primary-foreground: #0c0e12;
+
+  /* Secondary */
+  --secondary: #1e2128;
+  --secondary-foreground: #e4e7ec;
+
+  /* Accent - Critical signal red (used sparingly) */
+  --accent: #ef4444;
+  --accent-hover: #dc2626;
+  --accent-foreground: #ffffff;
+
+  /* Muted */
+  --muted: #1a1d23;
+  --muted-foreground: #6b7280;
+
+  /* Surfaces - layered panels */
+  --card: #14171d;
+  --card-foreground: #e4e7ec;
+  --popover: #1a1d23;
+  --popover-foreground: #e4e7ec;
+
+  /* Borders - panel seams */
+  --border: #252931;
+  --border-strong: #353a45;
+  --input: #252931;
+  --ring: #f59e0b;
+
+  /* Status colors - calibrated for dark */
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+
+  /* Data visualization */
+  --chart-1: #f59e0b;
+  --chart-2: #22c55e;
+  --chart-3: #0ea5e9;
+  --chart-4: #ef4444;
+  --chart-5: #a855f7;
+
+  /* Grid overlay */
+  --grid-color: rgba(245, 158, 11, 0.02);
+  --grid-line: rgba(245, 158, 11, 0.06);
+
+  /* Sidebar */
+  --sidebar: #14171d;
+  --sidebar-foreground: #e4e7ec;
+  --sidebar-primary: #f59e0b;
+  --sidebar-primary-foreground: #0c0e12;
+  --sidebar-accent: #1e2128;
+  --sidebar-accent-foreground: #e4e7ec;
+  --sidebar-border: #252931;
+  --sidebar-ring: #f59e0b;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-background-secondary: var(--background-secondary);
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius));
+  --radius-md: calc(var(--radius) + 2px);
+  --radius-lg: calc(var(--radius) + 4px);
+  --radius-xl: calc(var(--radius) + 6px);
+
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans), system-ui, sans-serif;
+  }
+}
+
+/* Typography utilities */
+.font-display {
+  font-family: var(--font-display), system-ui, sans-serif;
+}
+
+.font-mono {
+  font-family: var(--font-mono), monospace;
+}
+
+/* Atmospheric background - gradient orbs */
+.bg-atmosphere {
+  background:
+    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(30, 64, 175, 0.08), transparent 50%),
+    radial-gradient(ellipse 60% 50% at 90% 80%, rgba(14, 165, 233, 0.06), transparent 50%);
+}
+
+.dark .bg-atmosphere {
+  background:
+    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(245, 158, 11, 0.06), transparent 50%),
+    radial-gradient(ellipse 60% 50% at 90% 80%, rgba(239, 68, 68, 0.04), transparent 50%);
+}
+
+/* Grain texture overlay */
+.bg-grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Vignette effect */
+.bg-vignette::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 0%, var(--background) 90%);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* Data panel styling */
+.data-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  position: relative;
+}
+
+.data-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  opacity: 0.3;
+}
+
+/* Coordinate marker */
+.coord-marker {
+  position: relative;
+}
+
+.coord-marker::before {
+  content: attr(data-coord);
+  position: absolute;
+  top: -1.5rem;
+  left: 0;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.625rem;
+  color: var(--muted-foreground);
+  letter-spacing: 0.05em;
+}
+
+/* Status indicator glow */
+.status-glow {
+  box-shadow: 0 0 0 1px currentColor, 0 0 8px currentColor;
+}
+
+/* Refined button press */
+.btn-press:active {
+  transform: translateY(1px);
+}
+
+/* Accent border */
+.accent-border-left {
+  position: relative;
+}
+
+.accent-border-left::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--primary);
+}
+
+/* Stagger animation utilities */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+
+/* Subtle gradient backgrounds */
+.gradient-subtle {
+  background: linear-gradient(
+    135deg,
+    var(--background) 0%,
+    var(--background-secondary) 100%
+  );
+}
+
+/* Terminal cursor blink */
+@keyframes cursor-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.cursor-blink {
+  animation: cursor-blink 1s step-end infinite;
+}

@@ -1,0 +1,50 @@
+# Rust
+target/
+Cargo.lock
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment - catch all .env files in any directory
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+
+# K8s secrets (don't commit real secrets)
+*-secret.yaml.local
+values-production.yaml.local
+
+# Logs
+*.log
+
+# Python
+__pycache__/
+*.pyc
+
+# Local Claude settings that shouldn't be shared
+.claude/settings.local.json
+
+# Credentials
+*.pem
+*.key
+credentials.json
+
+# MCP config (contains API keys)
+.mcp.json
+mcp.json
+
+# Node
+node_modules/
+
+# Bun
+bun.lockb

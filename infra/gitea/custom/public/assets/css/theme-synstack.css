@@ -1,0 +1,381 @@
+/* SynStack Theme for Gitea */
+/* Matches the SynStack web design system */
+
+gitea-theme-meta-info {
+  --theme-display-name: "SynStack";
+}
+
+:root {
+  --is-dark-theme: true;
+
+  /* SynStack color palette */
+  --color-primary: #f59e0b;           /* Amber - primary actions */
+  --color-primary-dark-1: #d97706;
+  --color-primary-dark-2: #b45309;
+  --color-primary-light-1: #fbbf24;
+  --color-primary-light-2: #fcd34d;
+  --color-primary-alpha-10: rgba(245, 158, 11, 0.1);
+  --color-primary-alpha-20: rgba(245, 158, 11, 0.2);
+  --color-primary-alpha-40: rgba(245, 158, 11, 0.4);
+
+  --color-secondary: #0ea5e9;         /* Cyan - accent */
+  --color-accent: #ef4444;            /* Red - critical/destructive */
+
+  /* Background colors - dark control room aesthetic */
+  --color-body: #0c0e12;
+  --color-box-body: #14171d;
+  --color-box-body-highlight: #1a1e26;
+
+  /* Text colors */
+  --color-text: #e4e7ec;
+  --color-text-light: #9ca3af;
+  --color-text-light-1: #6b7280;
+  --color-text-light-2: #4b5563;
+  --color-text-dark: #f9fafb;
+
+  /* Border colors */
+  --color-secondary-dark-2: #252931;
+  --color-secondary-dark-1: #2d323c;
+  --color-secondary: #3d4452;
+  --color-secondary-light-1: #4d5566;
+
+  /* Success/Warning/Error */
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+
+  /* Fonts - match SynStack web */
+  --fonts-regular: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --fonts-monospace: 'JetBrains Mono', 'Fira Code', 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Border radius - minimal like SynStack */
+  --border-radius: 2px;
+  --border-radius-medium: 4px;
+  --border-radius-large: 6px;
+}
+
+/* Body background */
+body {
+  background-color: var(--color-body) !important;
+}
+
+/* Navbar styling */
+.ui.secondary.menu.navbar {
+  background-color: rgba(12, 14, 18, 0.95) !important;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-secondary-dark-2) !important;
+}
+
+.ui.secondary.menu.navbar .item {
+  color: var(--color-text-light) !important;
+  font-family: var(--fonts-monospace);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ui.secondary.menu.navbar .item:hover {
+  color: var(--color-text) !important;
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.ui.secondary.menu.navbar .item.active {
+  color: var(--color-primary) !important;
+  background-color: var(--color-primary-alpha-10) !important;
+}
+
+/* Homepage hero styling */
+.page-content.home .hero h1.title {
+  font-family: 'Barlow Condensed', var(--fonts-regular);
+  font-weight: 800;
+  font-size: 4rem;
+  letter-spacing: -0.02em;
+  color: var(--color-text-dark);
+}
+
+.page-content.home .hero h2 {
+  font-family: var(--fonts-monospace);
+  font-size: 1.1rem;
+  color: var(--color-text-light);
+  font-weight: 400;
+}
+
+.page-content.home .hero.ui.icon.header {
+  color: var(--color-primary);
+  font-family: 'Barlow Condensed', var(--fonts-regular);
+  font-weight: 700;
+}
+
+.page-content.home p.large {
+  color: var(--color-text-light);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Custom SynStack classes */
+.synstack-title {
+  font-family: 'Barlow Condensed', var(--fonts-regular) !important;
+  font-weight: 800 !important;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+.synstack-subtitle {
+  font-family: var(--fonts-monospace) !important;
+  font-weight: 400 !important;
+  color: var(--color-text-light) !important;
+}
+
+.synstack-cta {
+  padding: 1.5rem 2rem;
+  background-color: var(--color-box-body);
+  border: 1px solid var(--color-secondary-dark-2);
+  border-radius: var(--border-radius-medium);
+}
+
+.synstack-link {
+  color: var(--color-primary) !important;
+  font-weight: 600;
+}
+
+.synstack-link:hover {
+  color: var(--color-primary-light-1) !important;
+  text-decoration: underline;
+}
+
+/* Cards and boxes */
+.ui.segment,
+.ui.segments,
+.ui.card,
+.ui.cards > .card {
+  background-color: var(--color-box-body) !important;
+  border: 1px solid var(--color-secondary-dark-2) !important;
+  border-radius: var(--border-radius-medium) !important;
+  box-shadow: none !important;
+}
+
+/* Repository list */
+.repository.list .item {
+  border-bottom: 1px solid var(--color-secondary-dark-2) !important;
+  padding: 1rem 0 !important;
+}
+
+.repository.list .item:hover {
+  background-color: var(--color-box-body-highlight) !important;
+}
+
+/* Code styling */
+.ui.segment.code-diff,
+.CodeMirror,
+pre,
+code {
+  font-family: var(--fonts-monospace) !important;
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  border-radius: var(--border-radius) !important;
+}
+
+/* Buttons */
+.ui.button {
+  font-family: var(--fonts-monospace) !important;
+  font-size: 12px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  border-radius: var(--border-radius) !important;
+}
+
+.ui.primary.button,
+.ui.button.primary {
+  background-color: var(--color-primary) !important;
+  color: #000 !important;
+}
+
+.ui.primary.button:hover,
+.ui.button.primary:hover {
+  background-color: var(--color-primary-dark-1) !important;
+}
+
+.ui.green.button {
+  background-color: var(--color-success) !important;
+}
+
+.ui.red.button {
+  background-color: var(--color-error) !important;
+}
+
+/* Form inputs */
+.ui.input input,
+.ui.form input,
+.ui.form textarea,
+.ui.form select {
+  background-color: var(--color-body) !important;
+  border: 1px solid var(--color-secondary-dark-2) !important;
+  border-radius: var(--border-radius) !important;
+  color: var(--color-text) !important;
+  font-family: var(--fonts-regular) !important;
+}
+
+.ui.input input:focus,
+.ui.form input:focus,
+.ui.form textarea:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 2px var(--color-primary-alpha-20) !important;
+}
+
+/* Tables */
+.ui.table {
+  background-color: transparent !important;
+  border: 1px solid var(--color-secondary-dark-2) !important;
+}
+
+.ui.table thead th {
+  background-color: var(--color-box-body) !important;
+  font-family: var(--fonts-monospace) !important;
+  font-size: 11px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: var(--color-text-light) !important;
+}
+
+.ui.table tbody tr {
+  border-bottom: 1px solid var(--color-secondary-dark-2) !important;
+}
+
+.ui.table tbody tr:hover {
+  background-color: var(--color-box-body-highlight) !important;
+}
+
+/* Labels and badges */
+.ui.label {
+  font-family: var(--fonts-monospace) !important;
+  font-size: 10px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  border-radius: 2px !important;
+}
+
+/* Dropdown menus */
+.ui.dropdown .menu {
+  background-color: var(--color-box-body) !important;
+  border: 1px solid var(--color-secondary-dark-2) !important;
+}
+
+.ui.dropdown .menu > .item {
+  color: var(--color-text) !important;
+}
+
+.ui.dropdown .menu > .item:hover {
+  background-color: var(--color-box-body-highlight) !important;
+}
+
+/* Footer */
+.footer {
+  background-color: var(--color-body) !important;
+  border-top: 1px solid var(--color-secondary-dark-2) !important;
+}
+
+/* Octicons - match primary color */
+.page-content.home .hero .svg {
+  color: var(--color-primary);
+}
+
+/* PR/Issue status colors */
+.issue.is-open .issue-state-label {
+  background-color: var(--color-success) !important;
+}
+
+.issue.is-closed .issue-state-label {
+  background-color: var(--color-error) !important;
+}
+
+.issue.is-merged .issue-state-label {
+  background-color: #8b5cf6 !important; /* Purple for merged */
+}
+
+/* Diff colors */
+.diff-file-box .add-code {
+  background-color: rgba(34, 197, 94, 0.15) !important;
+}
+
+.diff-file-box .del-code {
+  background-color: rgba(239, 68, 68, 0.15) !important;
+}
+
+/* Activity feed */
+.feeds .news {
+  border-bottom: 1px solid var(--color-secondary-dark-2) !important;
+}
+
+/* Markdown content */
+.markup {
+  color: var(--color-text) !important;
+}
+
+.markup h1,
+.markup h2,
+.markup h3,
+.markup h4 {
+  color: var(--color-text-dark) !important;
+  font-family: 'Barlow Condensed', var(--fonts-regular) !important;
+}
+
+.markup code {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+  padding: 0.2em 0.4em !important;
+  border-radius: var(--border-radius) !important;
+  font-size: 0.9em !important;
+}
+
+.markup pre {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+  border: 1px solid var(--color-secondary-dark-2) !important;
+}
+
+/* File tree */
+.file-tree-panel {
+  background-color: var(--color-box-body) !important;
+  border-right: 1px solid var(--color-secondary-dark-2) !important;
+}
+
+/* Loading states */
+.ui.loader:before {
+  border-color: var(--color-secondary-dark-1) !important;
+}
+
+.ui.loader:after {
+  border-color: var(--color-primary) transparent transparent !important;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-body);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-secondary-dark-1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-secondary);
+}
+
+/* Hide default Gitea branding in footer */
+.footer .ui.container .left {
+  visibility: hidden;
+}
+
+.footer .ui.container .left:after {
+  content: "Powered by SynStack";
+  visibility: visible;
+  font-family: var(--fonts-monospace);
+  font-size: 11px;
+  color: var(--color-text-light);
+}
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');

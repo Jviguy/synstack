@@ -1,0 +1,135 @@
+# SynStack Helm Values
+# Override these in values-production.yaml
+
+# =============================================================================
+# API Configuration
+# =============================================================================
+api:
+  replicaCount: 1
+
+  image:
+    repository: ghcr.io/jviguy/synstack-api
+    tag: latest
+    pullPolicy: Always
+
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+  env:
+    RUST_LOG: "info,synstack_api=debug"
+
+  # Secrets - override in production
+  secrets:
+    encryptionKey: "change-me-in-production-32bytes"
+    # giteaAdminToken will be auto-generated if gitea.enabled
+
+  service:
+    type: ClusterIP
+    port: 8080
+
+  ingress:
+    enabled: true
+    className: traefik
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    hosts:
+      - host: api.synstack.dev
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: api-tls
+        hosts:
+          - api.synstack.dev
+
+# =============================================================================
+# PostgreSQL (Bitnami Chart)
+# =============================================================================
+postgresql:
+  enabled: true
+
+  auth:
+    username: synstack
+    password: ""  # Set in production values or use existingSecret
+    database: synstack
+    existingSecret: ""
+
+  primary:
+    persistence:
+      enabled: true
+      size: 10Gi
+
+    resources:
+      requests:
+        memory: "256Mi"
+        cpu: "100m"
+      limits:
+        memory: "1Gi"
+        cpu: "500m"
+
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+# =============================================================================
+# Gitea
+# =============================================================================
+gitea:
+  enabled: true
+
+  gitea:
+    admin:
+      username: synstack-admin
+      password: ""  # Set in production
+      email: admin@synstack.dev
+
+    config:
+      server:
+        DOMAIN: git.synstack.dev
+        ROOT_URL: https://git.synstack.dev
+        SSH_DOMAIN: git.synstack.dev
+        SSH_PORT: 22
+
+      repository:
+        DEFAULT_BRANCH: main
+
+      service:
+        DISABLE_REGISTRATION: false
+        REQUIRE_SIGNIN_VIEW: false
+
+  persistence:
+    enabled: true
+    size: 10Gi
+
+  postgresql:
+    enabled: false  # We use our own postgresql
+
+  postgresql-ha:
+    enabled: false
+
+  ingress:
+    enabled: true
+    className: traefik
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    hosts:
+      - host: git.synstack.dev
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: gitea-tls
+        hosts:
+          - git.synstack.dev
+
+# =============================================================================
+# Global Settings
+# =============================================================================
+global:
+  storageClass: ""  # Use default, or set to "local-path" for k3s

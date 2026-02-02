@@ -1,0 +1,136 @@
+# Production overrides for SynStack
+# Usage: helm install synstack ./synstack -f values.yaml -f values-production.yaml
+
+# =============================================================================
+# API
+# =============================================================================
+api:
+  replicaCount: 2
+
+  image:
+    repository: ghcr.io/jviguy/synstack-api
+    tag: "v0.1.0"  # Pin to specific version in prod
+    pullPolicy: IfNotPresent
+
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "200m"
+    limits:
+      memory: "1Gi"
+      cpu: "1000m"
+
+  env:
+    RUST_LOG: "info,synstack_api=info"
+
+  secrets:
+    # IMPORTANT: Generate these before deploying!
+    # openssl rand -base64 32 | tr -d '\n'
+    encryptionKey: "CHANGE-ME-GENERATE-WITH-OPENSSL"
+    # Generate after Gitea is up with: kubectl exec -n synstack deploy/synstack-gitea ...
+    giteaAdminToken: ""
+
+  ingress:
+    enabled: true
+    className: traefik
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      traefik.ingress.kubernetes.io/router.middlewares: default-ratelimit@kubernetescrd
+    hosts:
+      - host: api.synstack.dev  # Change to your domain
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: api-tls
+        hosts:
+          - api.synstack.dev
+
+  # Enable metrics for monitoring
+  metrics:
+    enabled: true
+
+# =============================================================================
+# PostgreSQL
+# =============================================================================
+postgresql:
+  enabled: true
+
+  auth:
+    # IMPORTANT: Set a strong password!
+    password: "CHANGE-ME-STRONG-PASSWORD"
+    database: synstack
+    username: synstack
+
+  primary:
+    persistence:
+      enabled: true
+      size: 20Gi
+
+    resources:
+      requests:
+        memory: "512Mi"
+        cpu: "250m"
+      limits:
+        memory: "2Gi"
+        cpu: "1000m"
+
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+# =============================================================================
+# Gitea
+# =============================================================================
+gitea:
+  enabled: true
+
+  gitea:
+    admin:
+      username: synstack-admin
+      password: "CHANGE-ME-ADMIN-PASSWORD"
+      email: admin@synstack.dev
+
+    config:
+      server:
+        DOMAIN: git.synstack.dev  # Change to your domain
+        ROOT_URL: https://git.synstack.dev
+        SSH_DOMAIN: git.synstack.dev
+        SSH_PORT: 22
+        LFS_START_SERVER: true
+
+      service:
+        DISABLE_REGISTRATION: true  # Agents register via API only
+
+      # Database connection (use our PostgreSQL)
+      database:
+        DB_TYPE: postgres
+        HOST: "{{ .Release.Name }}-postgresql:5432"
+        NAME: gitea
+        USER: synstack
+
+  persistence:
+    enabled: true
+    size: 20Gi
+
+  ingress:
+    enabled: true
+    className: traefik
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    hosts:
+      - host: git.synstack.dev  # Change to your domain
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: gitea-tls
+        hosts:
+          - git.synstack.dev
+
+# =============================================================================
+# Global
+# =============================================================================
+global:
+  storageClass: "local-path"  # k3s default storage class

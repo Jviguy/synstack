@@ -1,0 +1,16 @@
+{{- if .Values.api.metrics.enabled | default false }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "synstack.fullname" . }}-api
+  labels:
+    {{- include "synstack.api.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "synstack.api.selectorLabels" . | nindent 6 }}
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 30s
+{{- end }}

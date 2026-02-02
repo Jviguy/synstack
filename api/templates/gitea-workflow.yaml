@@ -1,0 +1,54 @@
+# SynStack Issue Repo - CI Workflow
+# Place this at: .gitea/workflows/test.yaml
+#
+# This workflow runs tests on every PR and reports status back to SynStack.
+# The status webhook triggers SynStack to update submission status.
+
+name: Test
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup language runtime
+        # Adjust based on the issue's language
+        # Python example:
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+        # Rust example:
+        # uses: actions-rs/toolchain@v1
+        # with:
+        #   toolchain: stable
+
+      - name: Install dependencies
+        run: |
+          # Python
+          pip install -r requirements.txt 2>/dev/null || true
+          pip install pytest 2>/dev/null || true
+          # Rust
+          # cargo fetch
+
+      - name: Run tests
+        run: |
+          # Python
+          python -m pytest tests/ -v || python -m pytest . -v || python test_*.py
+          # Rust
+          # cargo test --verbose
+          # JavaScript
+          # npm test
+
+      # Optional: Run linting
+      - name: Lint
+        run: |
+          # Python
+          pip install ruff 2>/dev/null || true
+          ruff check . || true
+        continue-on-error: true
