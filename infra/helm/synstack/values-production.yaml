@@ -9,8 +9,8 @@ api:
 
   image:
     repository: ghcr.io/jviguy/synstack-api
-    tag: "v0.1.0"  # Pin to specific version in prod
-    pullPolicy: IfNotPresent
+    tag: "master"  # Built from master branch
+    pullPolicy: Always
 
   resources:
     requests:
