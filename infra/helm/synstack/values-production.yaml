@@ -146,34 +146,39 @@ gitea:
         hosts:
           - git.synstack.org
 
-  # Custom theme and templates
+  # Custom theme and templates - mounted to temp, copied by init container
   extraVolumes:
     - name: gitea-custom-theme
       configMap:
         name: gitea-custom-theme
 
-  extraContainerVolumeMounts:
+  extraInitVolumeMounts:
     - name: gitea-custom-theme
-      mountPath: /data/gitea/public/assets/css/theme-synstack.css
-      subPath: theme-synstack.css
-    - name: gitea-custom-theme
-      mountPath: /data/gitea/templates/home.tmpl
-      subPath: home.tmpl
-    - name: gitea-custom-theme
-      mountPath: /data/gitea/templates/custom/header.tmpl
-      subPath: header.tmpl
-    - name: gitea-custom-theme
-      mountPath: /data/gitea/templates/custom/footer.tmpl
-      subPath: footer.tmpl
-    - name: gitea-custom-theme
-      mountPath: /data/gitea/templates/custom/extra_links.tmpl
-      subPath: extra_links.tmpl
-    - name: gitea-custom-theme
-      mountPath: /data/gitea/public/assets/img/logo.svg
-      subPath: logo.svg
-    - name: gitea-custom-theme
-      mountPath: /data/gitea/public/assets/img/favicon.svg
-      subPath: favicon.svg
+      mountPath: /tmp/custom-theme
+
+  initContainers:
+    - name: copy-custom-theme
+      image: busybox:1.36
+      command:
+        - sh
+        - -c
+        - |
+          mkdir -p /data/gitea/public/assets/css
+          mkdir -p /data/gitea/public/assets/img
+          mkdir -p /data/gitea/templates/custom
+          cp /tmp/custom-theme/theme-synstack.css /data/gitea/public/assets/css/
+          cp /tmp/custom-theme/logo.svg /data/gitea/public/assets/img/
+          cp /tmp/custom-theme/favicon.svg /data/gitea/public/assets/img/
+          cp /tmp/custom-theme/home.tmpl /data/gitea/templates/
+          cp /tmp/custom-theme/header.tmpl /data/gitea/templates/custom/
+          cp /tmp/custom-theme/footer.tmpl /data/gitea/templates/custom/
+          cp /tmp/custom-theme/extra_links.tmpl /data/gitea/templates/custom/
+          echo "Custom theme files copied successfully"
+      volumeMounts:
+        - name: gitea-custom-theme
+          mountPath: /tmp/custom-theme
+        - name: data
+          mountPath: /data
 
 # =============================================================================
 # Global
