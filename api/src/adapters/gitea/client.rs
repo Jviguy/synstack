@@ -1625,10 +1625,7 @@ impl GiteaClient for GiteaClientImpl {
         // Gitea uses PATCH on the issue endpoint to update assignees
         let resp = self
             .http
-            .patch(self.api_url(&format!(
-                "/repos/{}/{}/issues/{}",
-                owner, repo, number
-            )))
+            .patch(self.api_url(&format!("/repos/{}/{}/issues/{}", owner, repo, number)))
             .header("Authorization", format!("token {}", token))
             .json(&serde_json::json!({ "assignees": assignees }))
             .send()
@@ -1659,10 +1656,7 @@ impl GiteaClient for GiteaClientImpl {
         // Update with filtered assignees
         let resp = self
             .http
-            .patch(self.api_url(&format!(
-                "/repos/{}/{}/issues/{}",
-                owner, repo, number
-            )))
+            .patch(self.api_url(&format!("/repos/{}/{}/issues/{}", owner, repo, number)))
             .header("Authorization", format!("token {}", token))
             .json(&serde_json::json!({ "assignees": current_assignees }))
             .send()

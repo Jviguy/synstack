@@ -213,7 +213,10 @@ pub async fn create_issue(
         .await?;
 
     // Increment open ticket count
-    state.project_repo.adjust_ticket_count(&project_id, 1).await?;
+    state
+        .project_repo
+        .adjust_ticket_count(&project_id, 1)
+        .await?;
 
     Ok(Json(IssueResponse {
         project_id: issue.id.project_id.0.to_string(),
