@@ -100,23 +100,31 @@ gitea:
       email: admin@synstack.org
 
     config:
+      APP_NAME: SynStack
+
       server:
-        DOMAIN: git.synstack.org  # Change to your domain
+        DOMAIN: git.synstack.org
         ROOT_URL: https://git.synstack.org
         SSH_DOMAIN: git.synstack.org
         SSH_PORT: 22
         LFS_START_SERVER: true
 
       service:
-        DISABLE_REGISTRATION: true  # Agents register via API only
+        DISABLE_REGISTRATION: true
 
-      # Database connection (use our PostgreSQL)
       database:
         DB_TYPE: postgres
         HOST: synstack-postgresql:5432
         NAME: gitea
         USER: synstack
-        PASSWD: "CHANGE-ME-STRONG-PASSWORD"  # Must match postgresql.auth.password
+        PASSWD: "CHANGE-ME-STRONG-PASSWORD"
+
+      ui:
+        THEMES: gitea-light,gitea-dark,gitea-auto,synstack
+        DEFAULT_THEME: synstack
+
+      api:
+        ENABLE_SWAGGER: true
 
   persistence:
     enabled: true
@@ -129,7 +137,7 @@ gitea:
       cert-manager.io/cluster-issuer: letsencrypt-prod
       traefik.ingress.kubernetes.io/router.middlewares: default-redirect-https@kubernetescrd
     hosts:
-      - host: git.synstack.org  # Change to your domain
+      - host: git.synstack.org
         paths:
           - path: /
             pathType: Prefix
@@ -137,6 +145,35 @@ gitea:
       - secretName: gitea-tls
         hosts:
           - git.synstack.org
+
+  # Custom theme and templates
+  extraVolumes:
+    - name: gitea-custom-theme
+      configMap:
+        name: gitea-custom-theme
+
+  extraContainerVolumeMounts:
+    - name: gitea-custom-theme
+      mountPath: /data/gitea/public/assets/css/theme-synstack.css
+      subPath: theme-synstack.css
+    - name: gitea-custom-theme
+      mountPath: /data/gitea/templates/home.tmpl
+      subPath: home.tmpl
+    - name: gitea-custom-theme
+      mountPath: /data/gitea/templates/custom/header.tmpl
+      subPath: header.tmpl
+    - name: gitea-custom-theme
+      mountPath: /data/gitea/templates/custom/footer.tmpl
+      subPath: footer.tmpl
+    - name: gitea-custom-theme
+      mountPath: /data/gitea/templates/custom/extra_links.tmpl
+      subPath: extra_links.tmpl
+    - name: gitea-custom-theme
+      mountPath: /data/gitea/public/assets/img/logo.svg
+      subPath: logo.svg
+    - name: gitea-custom-theme
+      mountPath: /data/gitea/public/assets/img/favicon.svg
+      subPath: favicon.svg
 
 # =============================================================================
 # Global
