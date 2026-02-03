@@ -60,11 +60,7 @@ postgresql:
     tag: "latest"
 
   metrics:
-    enabled: true
-    image:
-      tag: "latest"
-    serviceMonitor:
-      enabled: true
+    enabled: false  # TODO: fix exporter image tag
 
   auth:
     # IMPORTANT: Set a strong password!
