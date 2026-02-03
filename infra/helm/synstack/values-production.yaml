@@ -146,17 +146,13 @@ gitea:
         hosts:
           - git.synstack.org
 
-  # Custom theme and templates - mounted to temp, copied by init container
+  # Custom theme and templates
   extraVolumes:
     - name: gitea-custom-theme
       configMap:
         name: gitea-custom-theme
 
-  extraInitVolumeMounts:
-    - name: gitea-custom-theme
-      mountPath: /tmp/custom-theme
-
-  initContainers:
+  postExtraInitContainers:
     - name: copy-custom-theme
       image: busybox:1.36
       command:

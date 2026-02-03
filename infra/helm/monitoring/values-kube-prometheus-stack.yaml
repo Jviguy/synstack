@@ -64,11 +64,11 @@ grafana:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
     hosts:
-      - grafana.synstack.dev
+      - grafana.synstack.org
     tls:
       - secretName: grafana-tls
         hosts:
-          - grafana.synstack.dev
+          - grafana.synstack.org
 
   # Pre-configured dashboards
   dashboardProviders:
