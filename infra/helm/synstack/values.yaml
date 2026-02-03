@@ -73,9 +73,7 @@ postgresql:
         cpu: "500m"
 
   metrics:
-    enabled: true
-    serviceMonitor:
-      enabled: true
+    enabled: false  # Bitnami exporter images are broken
 
 # =============================================================================
 # Gitea
